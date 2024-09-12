@@ -7,6 +7,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [fileName, setFileName] = useState('Click to upload image');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -19,9 +20,10 @@ function App() {
         const base64Image = reader.result;
         setImage(base64Image);
         setLoading(true);
+        setErrorMessage(null);
 
         try {
-          const apiKey = 'nWLeYAvnx1iFL61PUcxvoUxM'; 
+          const apiKey = '9k75i6YmCQsUA9GDHuEWXhwV'; 
 
           const formData = new FormData();
           formData.append('image_file', file);
@@ -45,6 +47,7 @@ function App() {
           setDownloadUrl(url);
         } catch (error) {
           console.error('Error removing background:', error);
+          setErrorMessage('Failed to remove background. Please check your API key or usage limits.');
         } finally {
           setLoading(false);
         }
@@ -95,6 +98,12 @@ function App() {
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="w-16 h-16 border-t-4 border-purple-600 border-solid rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="mb-4 mt-4 p-4 bg-red-100 border border-red-300 rounded-md text-red-800">
+          {errorMessage}
         </div>
       )}
 
